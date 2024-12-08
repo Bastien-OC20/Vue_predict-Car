@@ -1,0 +1,67 @@
+{
+  "name": "predict",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "bootstrap-vue-next": "^0.26.8",
+    "chart.js": "^4.4.7",
+    "core-js": "^3.39.0",
+    "d3": "^7.9.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
+    "papaparse": "^5.4.1",
+    "vue": "^3.5.13",
+    "vue-chartjs": "^5.3.2",
+    "vue-router": "^4.5.0",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/eslint-parser": "^7.25.9",
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-plugin-router": "~5.0.8",
+    "@vue/cli-plugin-vuex": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
+    "eslint": "^8.57.1",
+    "eslint-plugin-vue": "^9.32.0",
+    "vue-eslint-parser": "^9.4.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser",
+      "requireConfigFile": false
+    },
+    "rules": {
+      "no-console": "warn",
+      "no-debugger": "warn",
+      "vue/multi-word-component-names": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">= 10.0.0"
+  },
+  "description": "## Project setup"
+}
