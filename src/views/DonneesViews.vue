@@ -1,97 +1,172 @@
 <template>
-  <div class="donnees-container">
+  <div class="container">
     <h1>Données</h1>
-    <p>Page des données.</p>
-
+    <h3 class="mt-5">Utilisation de CatBoost et de la Régression Logistique</h3>
+    <div class="explanation">
+      <p>
+        CatBoost est un algorithme de gradient boosting développé par Yandex. Il est
+        particulièrement performant pour les données catégorielles et offre plusieurs
+        avantages :
+      </p>
+      <ul>
+        <li>
+          Gestion efficace des variables catégorielles sans besoin de prétraitement
+          complexe.
+        </li>
+        <li>
+          Réduction du surapprentissage grâce à des techniques de régularisation
+          intégrées.
+        </li>
+        <li>
+          Optimisation pour les calculs parallèles, ce qui améliore les performances.
+        </li>
+      </ul>
+      <p>
+        La régression logistique est un modèle statistique utilisé pour prédire la
+        probabilité d'un événement binaire. Ses avantages incluent :
+      </p>
+      <ul>
+        <li>Simplicité et interprétabilité des résultats.</li>
+        <li>Bonne performance pour les problèmes de classification binaire.</li>
+        <li>Facilité d'implémentation et de mise à jour avec de nouvelles données.</li>
+      </ul>
+      <p>
+        Pour garantir un modèle performant et stable, il est essentiel de suivre certaines
+        bonnes pratiques :
+      </p>
+      <ul>
+        <li>
+          Effectuer une analyse exploratoire des données pour comprendre les distributions
+          et les relations entre les variables.
+        </li>
+        <li>
+          Utiliser des techniques de validation croisée pour éviter le surapprentissage.
+        </li>
+      </ul>
+    </div>
     <div>
-      <!-- Répartition des Voitures par Marque -->
-      <D3BarChart :data="marqueChartData" :options="chartOptions" />
-
-      <!-- Répartition des Types de Carburant -->
-      <D3PieChart :data="carburantChartData" :options="chartOptions" />
-
-      <!-- Distribution des Transmissions -->
-      <D3DoughnutChart :data="transmissionChartData" :options="chartOptions" />
-
-      <!-- Prix Moyen par Année -->
-      <D3LineChart :data="prixAnneeChartData" :options="chartOptions" />
+      <div>
+        <div class="table-responsive mx-auto" style="max-width: 70%">
+          <h3>Exemple des données du csv</h3>
+          <table class="table table-striped mt-3" v-if="csvData.length">
+            <thead>
+              <tr>
+                <th v-for="(header, index) in csvHeaders" :key="index">{{ header }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, rowIndex) in csvData.slice(0, 5)" :key="rowIndex">
+                <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import D3BarChart from "@/components/D3BarChart.vue";
-import D3PieChart from "@/components/D3PieChart.vue";
-import D3DoughnutChart from "@/components/D3DoughnutChart.vue";
-import D3LineChart from "@/components/D3LineChart.vue";
+import { ref, onMounted } from "vue";
+import Papa from "papaparse";
 
-export default defineComponent({
-  components: {
-    D3BarChart,
-    D3PieChart,
-    D3DoughnutChart,
-    D3LineChart,
-  },
+export default {
+  name: "DonneesViews",
+  components: {},
   setup() {
-    const marqueChartData = ref([
-      { category: "Ford", value: 10 },
-      { category: "Toyota", value: 20 },
-      { category: "Honda", value: 30 },
-    ]);
+    const csvData = ref([]);
+    const csvHeaders = ref([]);
+    const uniqueValues = ref({});
+    const chartData = ref([]);
 
-    const carburantChartData = ref([
-      { category: "Essence", value: 50 },
-      { category: "Diesel", value: 30 },
-      { category: "Électrique", value: 20 },
-    ]);
+    const loadCSV = () => {
+      const csvFilePath = "/data/voitures_aramisauto_cleaned_new.csv";
+      fetch(csvFilePath)
+        .then((response) => response.text())
+        .then((data) => {
+          Papa.parse(data, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            complete: function (results) {
+              csvHeaders.value = results.meta.fields;
+              csvData.value = results.data;
+              extractUniqueValues(results.data);
+              prepareChartData(results.data);
+            },
+            error: function (error) {
+              console.error("Erreur lors de la lecture du fichier CSV:", error);
+            },
+          });
+        })
+        .catch((error) => {
+          console.error("Erreur lors du chargement du fichier CSV:", error);
+        });
+    };
 
-    const transmissionChartData = ref([
-      { category: "Manuelle", value: 40 },
-      { category: "Automatique", value: 60 },
-    ]);
+    const extractUniqueValues = (data) => {
+      const uniqueValuesMap = {};
+      csvHeaders.value.forEach((header) => {
+        uniqueValuesMap[header] = [
+          ...new Set(
+            data
+              .map((row) => row[header])
+              .filter((value) => value !== null && value !== undefined)
+          ),
+        ];
+      });
+      uniqueValues.value = uniqueValuesMap;
+    };
 
-    const prixAnneeChartData = ref([
-      { year: "2018", value: 20000 },
-      { year: "2019", value: 21000 },
-      { year: "2020", value: 22000 },
-      { year: "2021", value: 23000 },
-      { year: "2022", value: 24000 },
-    ]);
+    const prepareChartData = (data) => {
+      chartData.value = data.map((row) => ({
+        x: row["Kilométrage"], // Remplacez par la colonne appropriée
+        y: row["Prix"], // Remplacez par la colonne appropriée
+      }));
+    };
 
-    const chartOptions = ref({
-      // Options globales pour les graphiques
-      barColor: "#69b3a2",
-      lineColor: "steelblue",
-      // Vous pouvez ajouter d'autres options spécifiques
+    onMounted(() => {
+      loadCSV();
     });
 
     return {
-      marqueChartData,
-      carburantChartData,
-      transmissionChartData,
-      prixAnneeChartData,
-      chartOptions,
+      csvData,
+      csvHeaders,
+      uniqueValues,
+      chartData,
     };
   },
-});
+};
 </script>
 
 <style scoped>
-.donnees-container {
-  padding: 20px;
-  text-align: center;
+.table {
+  width: 100%;
+  margin-top: 20px;
 }
 
-.donnees-container div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+.unique-values-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.donnees-container div > * {
-  flex: 1 1 45%;
-  min-width: 300px;
-  height: 400px;
+.unique-values-list {
+  max-height: 150px;
+  overflow-y: auto;
+  padding-left: 20px;
+}
+
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 600px;
+  width: 800px;
+}
+
+.explanation {
+  margin-top: 20px;
 }
 </style>

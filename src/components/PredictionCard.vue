@@ -8,7 +8,6 @@
         {{ formatNumber(prediction.catboost_prediction) }} €
       </p>
       <p><strong>Évaluation :</strong> {{ evaluation }}</p>
-      <button @click="displayDetails" class="btn btn-info">Afficher les détails</button>
       <button @click="downloadReportPDF" class="btn btn-success">
         Télécharger le Rapport en PDF
       </button>

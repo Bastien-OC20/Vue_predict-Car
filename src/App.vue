@@ -35,11 +35,12 @@ body,
 #app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 60vh;
   font-family: "Roboto", sans-serif;
 }
 
 .content {
   padding: 20px;
+  max-height: 120vh;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="home-views">
-    <div class="container mt-5">
+    <div class="container">
       <h1 class="homeAccueil text-left">Accueil</h1>
       <p class="lead text-left">
         Bienvenue sur notre projet : Prédiction du prix des voitures d'occasion
@@ -13,17 +13,27 @@
           </p>
           <ul class="list-unstyled">
             <li class="mb-3 text-left">
-              <span class="fw-bold">💡 Collecte des données :</span> Scraping des sites
-              d'annonces et enrichissement avec des sources publiques.
+              <span class="fw-bold">💡 Source d'apprentissage :</span> Les données
+              proviennent du site d'annonces de voitures d'occasions
+              <span
+                ><a
+                  href="https://www.aramisauto.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Aramis auto"
+                  alt="logo aramis auto"
+                  ><img
+                    src="../assets/img/aramis.svg"
+                    alt="logo aramis auto"
+                    title="Aramis auto"
+                    class="logo_paternaire"
+                  /> </a
+              ></span>
+              .
             </li>
             <li class="mb-3 text-left">
-              <span class="fw-bold">📊 Analyse avancée :</span> Exploration et
-              visualisation pour identifier les facteurs clés.
-            </li>
-            <li class="mb-3 text-left">
-              <span class="fw-bold">🖥️ Application interactive :</span> Une interface
-              simple avec Streamlit pour obtenir des estimations précises en quelques
-              clics.
+              <span class="fw-bold">📊 Machine learning :</span> Exploration et
+              visualisation des données pour l'entrainement à la prediction du prix.
             </li>
           </ul>
           <p class="text-left">
@@ -105,6 +115,8 @@ export default {
   background-color: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
+  margin-top: 10vh;
+  margin-bottom: 2vh;
 }
 
 ul.list-unstyled {
@@ -117,5 +129,11 @@ li.mb-3 {
 
 p.text-left {
   margin-bottom: 1rem;
+}
+
+.logo_paternaire {
+  width: 100px;
+  margin-left: 5px;
+  margin-bottom: 5px;
 }
 </style>

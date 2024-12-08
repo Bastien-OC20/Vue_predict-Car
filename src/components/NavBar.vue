@@ -7,13 +7,22 @@
       <div class="collapse navbar-collapse justify-content-center">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" to="/">Accueil</router-link>
+            <router-link class="nav-link" to="/">
+              <i class="bi bi-house-door-fill"></i>
+              Accueil</router-link
+            >
           </li>
           <li class="nav-item" v-if="isLoggedIn">
-            <router-link class="nav-link" to="/predict">Predict</router-link>
+            <router-link class="nav-link" to="/predict">
+              <i class="bi bi-bar-chart-fill"></i>
+              Predict</router-link
+            >
           </li>
           <li class="nav-item" v-if="isLoggedIn">
-            <router-link class="nav-link" to="/donnees">Données</router-link>
+            <router-link class="nav-link" to="/donnees">
+              <i class="bi bi-table"></i>
+              Données</router-link
+            >
           </li>
         </ul>
       </div>
@@ -41,15 +50,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "NavBar",
   computed: {
-    ...mapGetters(['isLoggedIn']),
+    ...mapGetters(["isLoggedIn"]),
   },
   methods: {
-    ...mapActions(['logoutAction']),
+    ...mapActions(["logoutAction"]),
     handleLogout() {
       this.logoutAction();
       this.$router.push("/login");
@@ -64,6 +73,12 @@ export default {
   padding: 2px;
   height: 50px;
   margin-right: 10px;
+}
+.nav-item {
+  margin-right: 10px;
+  font-size: 20px;
+  padding: 10px;
+  
 }
 
 a {

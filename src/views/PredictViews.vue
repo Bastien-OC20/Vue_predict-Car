@@ -87,8 +87,6 @@
       <div class="mb-3">
         <label for="etat" class="form-label">État :</label>
         <select v-model="formData.etat" class="form-control" id="etat" required>
-          <option disabled value="">Sélectionnez un état</option>
-          <option value="Neuf">Neuf</option>
           <option value="Occasion">Occasion</option>
         </select>
       </div>
@@ -97,12 +95,18 @@
       <div class="mb-3">
         <label for="kilometrage" class="form-label">Kilométrage :</label>
         <input
-          type="number"
+          type="range"
           v-model.number="formData.kilometrage"
-          class="form-control"
+          class="form-range"
           id="kilometrage"
+          min="0"
+          max="300000"
+          step="1000"
           required
         />
+        <div class="mt-2">
+          <span>{{ formData.kilometrage }} km</span>
+        </div>
       </div>
 
       <!-- Année -->
@@ -127,7 +131,6 @@
         :prediction="prediction"
         :evaluation="prediction.Logistic_Regression_evaluation"
         :reportData="formData"
-        :reportUrl="reportUrl"
         class="predictCard mt-4"
       />
     </div>
@@ -162,11 +165,10 @@ export default {
         carburant: "", // Type de carburant
         transmission: "", // Type de transmission
         kilometrage: 0,
-        annee: 0,
+        annee: 1950,
         etat: "",
       },
       prediction: null,
-      reportUrl: "",
       error: null,
     };
   },
@@ -288,7 +290,9 @@ export default {
 .predictCard {
   display: flex;
   justify-content: center;
-  position: relative;
+  position: absolute;
+  bottom: 40%;
+  right: 40%;
   margin-top: 1em;
 }
 </style>
